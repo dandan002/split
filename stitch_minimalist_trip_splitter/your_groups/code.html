@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: #f9f9f9;
+        }
+        /* Custom micro-interactions */
+        .group-row:active {
+            transform: scale(0.99);
+            background-color: #eeeeee;
+        }
+        .add-group-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1a1c1c",
+                        "secondary-container": "#dfe0e0",
+                        "surface-tint": "#5e5e5e",
+                        "on-primary-fixed-variant": "#474747",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#c6c6c6",
+                        "on-surface-variant": "#4c4546",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "tertiary-container": "#1b1c1c",
+                        "outline-variant": "#cfc4c5",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "surface-container-high": "#e8e8e8",
+                        "on-primary-container": "#848484",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#454747",
+                        "background": "#f9f9f9",
+                        "inverse-primary": "#c6c6c6",
+                        "outline": "#7e7576",
+                        "on-secondary-container": "#616363",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-dim": "#dadada",
+                        "surface-variant": "#e2e2e2",
+                        "secondary": "#5d5f5f",
+                        "tertiary": "#000000",
+                        "surface-container-low": "#f3f3f3",
+                        "surface": "#f9f9f9",
+                        "inverse-surface": "#2f3131",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "on-primary-fixed": "#1b1b1b",
+                        "on-surface": "#1a1c1c",
+                        "tertiary-fixed": "#e3e2e2",
+                        "primary-container": "#1b1b1b",
+                        "surface-container-highest": "#e2e2e2",
+                        "primary-fixed": "#e2e2e2",
+                        "primary": "#000000",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "tertiary-fixed-dim": "#c7c6c6",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#848484",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "gutter": "12px",
+                        "xs": "4px",
+                        "margin-mobile": "20px",
+                        "unit": "4px",
+                        "xl": "40px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "display": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "body-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["14px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopAppBar Shell -->
+<header class="w-full top-0 bg-surface flex items-center justify-between px-margin-mobile h-16 w-full border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95" data-icon="arrow_back">arrow_back</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Split</h1>
+</div>
+<button class="add-group-btn h-10 w-10 flex items-center justify-center border border-primary rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</header>
+<main class="min-h-screen px-margin-mobile pt-lg pb-32 max-w-2xl mx-auto">
+<!-- Hero Summary / Architectural Minimalism -->
+<section class="mb-xl">
+<h2 class="font-label-caps text-label-caps text-secondary mb-xs">OVERVIEW</h2>
+<div class="flex items-baseline justify-between">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Active Groups</h3>
+<span class="font-mono-data text-mono-data text-primary">04 GROUPS</span>
+</div>
+</section>
+<!-- Groups List -->
+<section class="flex flex-col">
+<!-- Group Item: Iceland Trip -->
+<div class="group-row min-h-[64px] py-lg border-b border-outline-variant flex items-center justify-between transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">Iceland Trip</span>
+<span class="font-body-md text-body-md text-secondary">JUN 12 – JUN 20, 2024</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-mono-data text-mono-data font-bold text-on-surface">$1,420.50</span>
+<span class="font-label-caps text-label-caps text-on-primary-container bg-primary-container px-2 py-0.5">OWED</span>
+</div>
+</div>
+<!-- Group Item: Weekend in NYC -->
+<div class="group-row min-h-[64px] py-lg border-b border-outline-variant flex items-center justify-between transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">Weekend in NYC</span>
+<span class="font-body-md text-body-md text-secondary">MAY 04 – MAY 06, 2024</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-mono-data text-mono-data font-bold text-on-surface">$428.00</span>
+<span class="font-label-caps text-label-caps text-secondary">SETTLED</span>
+</div>
+</div>
+<!-- Group Item: Tokyo Dining -->
+<div class="group-row min-h-[64px] py-lg border-b border-outline-variant flex items-center justify-between transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">Tokyo Dining</span>
+<span class="font-body-md text-body-md text-secondary">APR 15 – APR 22, 2024</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-mono-data text-mono-data font-bold text-on-surface">$890.12</span>
+<span class="font-label-caps text-label-caps text-on-primary-container bg-primary-container px-2 py-0.5">OWED</span>
+</div>
+</div>
+<!-- Group Item: Skiing 2024 -->
+<div class="group-row min-h-[64px] py-lg border-b border-outline-variant flex items-center justify-between transition-all cursor-pointer">
+<div class="flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">Skiing 2024</span>
+<span class="font-body-md text-body-md text-secondary">FEB 10 – FEB 17, 2024</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-mono-data text-mono-data font-bold text-on-surface">$2,105.00</span>
+<span class="font-label-caps text-label-caps text-secondary">SETTLED</span>
+</div>
+</div>
+</section>
+<!-- New Group Visual Anchor -->
+<section class="mt-xl">
+<button class="w-full flex items-center justify-center gap-sm py-lg border border-dashed border-outline hover:border-primary transition-colors group">
+<div class="h-8 w-8 flex items-center justify-center border border-outline rounded-full group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-primary" data-icon="add">add</span>
+</div>
+<span class="font-label-caps text-label-caps text-secondary group-hover:text-primary">CREATE NEW TRIP GROUP</span>
+</button>
+</section>
+<!-- Secondary Content Block -->
+<section class="mt-xl mb-lg">
+<div class="p-lg bg-surface-container-low flex flex-col gap-md">
+<h4 class="font-headline-md text-headline-md">Recent Activity</h4>
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="receipt_long">receipt_long</span>
+</div>
+<div>
+<p class="font-body-md text-body-md">Marc added "Dinner at Blue Hill" to NYC trip.</p>
+<p class="font-label-caps text-label-caps text-secondary">2 HOURS AGO</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface border-t border-outline-variant flex justify-around items-center w-full pb-safe h-16">
+<a class="flex flex-col items-center justify-center text-primary font-bold border-t-2 border-primary pt-2 hover:opacity-80 transition-opacity active:opacity-70" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-caps text-label-caps">Groups</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary pt-2 hover:text-primary transition-colors active:opacity-70" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-caps text-label-caps">Activity</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary pt-2 hover:text-primary transition-colors active:opacity-70" href="#">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary pt-2 hover:text-primary transition-colors active:opacity-70" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for the row focus
+        document.querySelectorAll('.group-row').forEach(row => {
+            row.addEventListener('click', () => {
+                // Future navigation logic
+                console.log('Group selected');
+            });
+        });
+    </script>
+</body></html>

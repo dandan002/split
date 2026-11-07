@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Split",
+    "slug": "split-trip-costs",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "split",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.split.trips",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Split scans receipts so you can itemize trip costs.",
+        "NSPhotoLibraryUsageDescription": "Split imports receipt images from your photo library."
+      }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Split to scan receipts."
+        }
+      ],
+      "expo-image-picker"
+    ]
+  }
+}

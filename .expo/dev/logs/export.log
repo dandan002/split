@@ -1,0 +1,15 @@
+{"_e":"root:init","_t":1781052025464,"format":"v0-jsonl","version":"56.1.14"}
+{"_e":"env:mode","_t":1781052025594,"nodeEnv":"production","babelEnv":"production","mode":"production"}
+{"_e":"env:load","_t":1781052025596,"mode":"production","files":[],"env":{}}
+{"_e":"devserver:start","_t":1781052025617,"mode":"production","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../../../app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":true}
+{"_e":"metro:config","_t":1781052025839,"serverRoot":"../../..","projectRoot":"../../..","exporting":true,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"metro:instantiate","_t":1781052025940,"atlas":false,"workers":7,"host":null,"port":null}
+{"_e":"metro:bundling:started","_t":1781052026062,"id":"1","platform":"ios","environment":null,"entry":"index.js"}
+{"_e":"root:init","_t":1781052041915,"format":"v0-jsonl","version":"56.1.14"}
+{"_e":"env:mode","_t":1781052042042,"nodeEnv":"production","babelEnv":"production","mode":"production"}
+{"_e":"env:load","_t":1781052042043,"mode":"production","files":[],"env":{}}
+{"_e":"devserver:start","_t":1781052042068,"mode":"production","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../../../app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":true}
+{"_e":"metro:config","_t":1781052042297,"serverRoot":"../../..","projectRoot":"../../..","exporting":true,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"metro:instantiate","_t":1781052042399,"atlas":false,"workers":7,"host":null,"port":null}
+{"_e":"metro:bundling:started","_t":1781052042571,"id":"1","platform":"ios","environment":null,"entry":"index.js"}
+{"_e":"metro:bundling:done","_t":1781052048436,"id":"1","total":643,"ms":5864.620042}
