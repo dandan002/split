@@ -50,10 +50,4 @@ export const type = StyleSheet.create({
     lineHeight: 16,
     textTransform: 'uppercase',
   },
-  mono: {
-    fontSize: 15,
-    fontWeight: '800',
-    fontVariant: ['tabular-nums'],
-    letterSpacing: -0.1,
-  },
 });

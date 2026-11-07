@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -12,46 +11,36 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { canSaveReceipt, dollars } from './core/allocation.mjs';
+import { canSaveReceipt, dollars, type ReceiptInput } from './core/allocation.mjs';
 import { groups, members, scannedReceipt } from './data/demo';
 import { colors, spacing, type } from './theme';
 
 type Route = 'login' | 'groups' | 'scan' | 'review' | 'activity' | 'profile';
 type ReceiptDraft = typeof scannedReceipt;
-type ReceiptInput = {
-  members: typeof members;
-  items: ReceiptDraft['items'];
-  adjustments: ReceiptDraft['adjustments'];
-  receiptTotalCents: number;
-};
 
 export default function App() {
   const [route, setRoute] = useState<Route>('login');
   const [receipt, setReceipt] = useState<ReceiptDraft>(scannedReceipt);
 
-  const navigate = (nextRoute: Route) => {
-    setRoute(nextRoute);
-  };
-
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" />
       {route === 'login' ? (
-        <LoginScreen onDone={() => navigate('groups')} />
+        <LoginScreen onDone={() => setRoute('groups')} />
       ) : (
         <View style={styles.shell}>
-          {route === 'groups' && <GroupsScreen onScan={() => navigate('scan')} />}
-          {route === 'scan' && <ScanScreen onCapture={() => navigate('review')} />}
+          {route === 'groups' && <GroupsScreen onScan={() => setRoute('scan')} />}
+          {route === 'scan' && <ScanScreen onCapture={() => setRoute('review')} />}
           {route === 'review' && (
             <ReviewReceiptScreen
               receipt={receipt}
               onChangeReceipt={setReceipt}
-              onBack={() => navigate('scan')}
+              onBack={() => setRoute('scan')}
             />
           )}
           {route === 'activity' && <PlaceholderScreen title="Activity" label="SETTLEMENT LOG" />}
           {route === 'profile' && <PlaceholderScreen title="Profile" label="ACCOUNT" />}
-          <BottomNav active={route} onNavigate={navigate} />
+          <BottomNav active={route} onNavigate={setRoute} />
         </View>
       )}
     </SafeAreaView>
@@ -115,7 +104,7 @@ function GroupsScreen({ onScan }: { onScan: () => void }) {
         <Text style={[type.label, styles.muted]}>OVERVIEW</Text>
         <View style={styles.spaceBetween}>
           <Text style={type.headline}>Active Groups</Text>
-          <Text style={styles.monoStrong}>04 GROUPS</Text>
+          <Text style={styles.monoStrong}>{`${String(groups.length).padStart(2, '0')} GROUPS`}</Text>
         </View>
       </View>
 
@@ -224,15 +213,16 @@ function ReviewReceiptScreen({
   onChangeReceipt: (receipt: ReceiptDraft) => void;
   onBack: () => void;
 }) {
-  const receiptInput: ReceiptInput = {
-    members,
-    items: receipt.items,
-    adjustments: receipt.adjustments,
-    receiptTotalCents: receipt.receiptTotalCents,
-  };
-  const validation = useMemo(() => canSaveReceipt(receiptInput), [receipt]);
-  const allocation = validation.result;
-  const memberTotals = allocation.memberTotals as Record<string, number>;
+  const validation = useMemo(() => {
+    const receiptInput: ReceiptInput = {
+      members,
+      items: receipt.items,
+      adjustments: receipt.adjustments,
+      receiptTotalCents: receipt.receiptTotalCents,
+    };
+    return canSaveReceipt(receiptInput);
+  }, [receipt]);
+  const { memberTotals, remainingCents } = validation.result;
 
   const cycleAssignment = (itemId: string) => {
     const presets = [
@@ -326,7 +316,7 @@ function ReviewReceiptScreen({
             {validation.ok ? 'BALANCED' : validation.reasons.join(' / ').replaceAll('_', ' ')}
           </Text>
           <Text style={styles.monoStrong}>
-            Remaining {dollars(validation.ok ? 0 : allocation.remainingCents)}
+            Remaining {dollars(remainingCents)}
           </Text>
         </View>
         <Pressable style={[styles.saveButton, !validation.ok && styles.disabledButton]} disabled={!validation.ok}>
@@ -385,7 +375,7 @@ function ScreenFrame({
   rightIcon,
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   rightIcon?: keyof typeof Ionicons.glyphMap;
 }) {
   return (
@@ -402,7 +392,7 @@ function Header({
   onBack,
 }: {
   title: string;
-  right?: React.ReactNode;
+  right?: ReactNode;
   onBack?: () => void;
 }) {
   return (

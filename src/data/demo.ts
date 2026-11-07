@@ -1,11 +1,5 @@
 import { cents } from '../core/allocation.mjs';
 
-export const currentUser = {
-  id: 'ana',
-  name: 'Ana',
-  email: 'ana@example.com',
-};
-
 export const groups = [
   {
     id: 'iceland',
@@ -47,7 +41,6 @@ export const members = [
 export const scannedReceipt = {
   merchant: 'Blue Hill',
   date: 'Today, 8:42 PM',
-  confidence: 0.92,
   items: [
     {
       id: 'oysters',
