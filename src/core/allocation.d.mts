@@ -34,6 +34,8 @@ export type ReceiptInput = {
 };
 
 export function cents(value: string | number): number;
+export function parseCents(value: unknown): number | null;
+export function formatCentsInput(amountCents: number): string;
 export function dollars(amountCents: number): string;
 export function allocateReceipt(receipt: ReceiptInput): {
   memberTotals: Record<string, number>;

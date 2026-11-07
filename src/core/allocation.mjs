@@ -3,16 +3,53 @@ export function cents(value) {
     return Math.round(value * 100);
   }
 
-  const trimmed = String(value).trim();
-  const sign = trimmed.startsWith('-') ? -1 : 1;
-  const normalized = trimmed.replace(/^-/, '');
-  const [whole = '0', fraction = ''] = normalized.split('.');
-  const paddedFraction = `${fraction}00`.slice(0, 2);
+  const parsed = parseCents(value);
+  return parsed === null ? Number.NaN : parsed;
+}
 
-  return sign * (Number.parseInt(whole, 10) * 100 + Number.parseInt(paddedFraction, 10));
+// Parses user-entered money ("12", "12.5", "$1,204.99", "-3.10") into integer
+// cents. Returns null for anything that is not a well-formed amount, including
+// more than two decimal places.
+export function parseCents(value) {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? Math.round(value * 100) : null;
+  }
+
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim().replace(/[$,\s]/g, '');
+  const match = /^(-)?(\d*)(?:\.(\d{0,2}))?$/.exec(trimmed);
+
+  if (!match || (match[2] === '' && !match[3])) {
+    return null;
+  }
+
+  const sign = match[1] ? -1 : 1;
+  const whole = Number.parseInt(match[2] || '0', 10);
+  const fraction = Number.parseInt(`${match[3] ?? ''}00`.slice(0, 2), 10);
+  const result = sign * (whole * 100 + fraction);
+
+  return Number.isSafeInteger(result) ? result || 0 : null;
+}
+
+// Formats cents for an editable text field ("12.50", "-3.00").
+export function formatCentsInput(amountCents) {
+  if (!Number.isInteger(amountCents)) {
+    return '';
+  }
+
+  const sign = amountCents < 0 ? '-' : '';
+  const absolute = Math.abs(amountCents);
+  return `${sign}${Math.floor(absolute / 100)}.${String(absolute % 100).padStart(2, '0')}`;
 }
 
 export function dollars(amountCents) {
+  if (!Number.isFinite(amountCents)) {
+    return '--';
+  }
+
   const sign = amountCents < 0 ? '-' : '';
   const absolute = Math.abs(amountCents);
   return `${sign}$${Math.floor(absolute / 100).toLocaleString('en-US')}.${String(absolute % 100).padStart(2, '0')}`;
@@ -21,20 +58,43 @@ export function dollars(amountCents) {
 export function canSaveReceipt(receipt) {
   const reasons = [];
   const result = allocateReceipt(receipt);
+  const memberIds = new Set(receipt.members.map((member) => member.id));
+  const adjustments = receipt.adjustments ?? [];
+  const allAllocations = [
+    ...receipt.items.flatMap((item) => item.allocations ?? []),
+    ...adjustments.flatMap((adjustment) => adjustment.allocations ?? []),
+  ];
 
   const hasUnassignedItems = receipt.items.some((item) => !item.allocations || item.allocations.length === 0);
-  const hasInvalidAmounts = receipt.items.some((item) => !Number.isInteger(item.amountCents) || item.amountCents < 0);
+  const hasInvalidTotal = !Number.isInteger(receipt.receiptTotalCents) || receipt.receiptTotalCents < 0;
+  const checks = [
+    ['no_items', receipt.items.length === 0],
+    ['unassigned_items', hasUnassignedItems],
+    ['invalid_item_amounts', receipt.items.some((item) => !Number.isInteger(item.amountCents) || item.amountCents < 0)],
+    ['invalid_adjustment_amounts', adjustments.some((adjustment) => !Number.isInteger(adjustment.amountCents))],
+    [
+      'unassigned_adjustments',
+      adjustments.some(
+        (adjustment) => adjustment.strategy === 'custom' && (!adjustment.allocations || adjustment.allocations.length === 0),
+      ),
+    ],
+    ['unknown_members', allAllocations.some((allocation) => !memberIds.has(allocation.memberId))],
+    [
+      'invalid_weights',
+      allAllocations.some((allocation) => {
+        const weight = allocation.weight ?? allocation.amountCents ?? 1;
+        return !Number.isFinite(weight) || weight < 0;
+      }),
+    ],
+    ['invalid_total', hasInvalidTotal],
+    ['negative_member_total', Object.values(result.memberTotals).some((total) => total < 0)],
+    ['receipt_total_mismatch', !hasUnassignedItems && !hasInvalidTotal && result.remainingCents !== 0],
+  ];
 
-  if (hasUnassignedItems) {
-    reasons.push('unassigned_items');
-  }
-
-  if (hasInvalidAmounts) {
-    reasons.push('invalid_item_amounts');
-  }
-
-  if (!hasUnassignedItems && result.remainingCents !== 0) {
-    reasons.push('receipt_total_mismatch');
+  for (const [reason, failed] of checks) {
+    if (failed) {
+      reasons.push(reason);
+    }
   }
 
   return {
